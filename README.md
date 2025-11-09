@@ -2,7 +2,9 @@
 
 **First off, a big thanks to [mr-manuel](https://github.com/mr-manuel) that created a bunch of templates that made this possible**
 
-GitHub repository: [LundSoftwares/venus-os_dbus-mqtt-temperature-x5](https://github.com/LundSoftwares/venus-os_dbus-mqtt-temperature-x5)
+Forked from GitHub repository: [LundSoftwares/venus-os_dbus-mqtt-temperature-x5](https://github.com/LundSoftwares/venus-os_dbus-mqtt-temperature-x5)
+
+GitHub repository: [deepblue134/venus-os_dbus-mqtt-temperature-x10](https://github.com/deepblue134/venus-os_dbus-mqtt-temperature-x10)
 
 ### Disclaimer
 I'm not responsible for the usage of this script. Use on own risk! 
