@@ -116,6 +116,35 @@ if "DEFAULT" in config and "type5" in config["DEFAULT"]:
 else:
     type5 = 2
     
+# get type 6
+if "DEFAULT" in config and "type6" in config["DEFAULT"]:
+    type6 = int(config["DEFAULT"]["type6"])
+else:
+    type6 = 2
+    
+# get type 7
+if "DEFAULT" in config and "type7" in config["DEFAULT"]:
+    type7 = int(config["DEFAULT"]["type7"])
+else:
+    type7 = 2
+    
+# get type 8
+if "DEFAULT" in config and "type8" in config["DEFAULT"]:
+    type8 = int(config["DEFAULT"]["type8"])
+else:
+    type8 = 2
+    
+# get type 9
+if "DEFAULT" in config and "type9" in config["DEFAULT"]:
+    type9 = int(config["DEFAULT"]["type9"])
+else:
+    type9 = 2
+    
+# get type 10
+if "DEFAULT" in config and "type10" in config["DEFAULT"]:
+    type10 = int(config["DEFAULT"]["type10"])
+else:
+    type10 = 2
     
     
 # set variables
@@ -150,6 +179,36 @@ last_updated5 = 0
 temperature5 = -999
 pressure5 = None
 humidity5 = None
+
+last_changed6 = 0
+last_updated6 = 0
+temperature6 = -999
+pressure6 = None
+humidity6 = None
+
+last_changed7 = 0
+last_updated7 = 0
+temperature7 = -999
+pressure7 = None
+humidity7 = None
+
+last_changed8 = 0
+last_updated8 = 0
+temperature8 = -999
+pressure8 = None
+humidity8 = None
+
+last_changed9 = 0
+last_updated9 = 0
+temperature9 = -999
+pressure9 = None
+humidity9 = None
+
+last_changed10 = 0
+last_updated10 = 0
+temperature10 = -999
+pressure10 = None
+humidity10 = None
 
 # MQTT requests
 def on_disconnect(client, userdata, flags, rc, properties):
@@ -188,7 +247,7 @@ def on_connect(client, userdata, flags, rc, properties):
 
 def on_message(client, userdata, msg):
     try:
-        global last_changed, temperature, humidity, pressure, last_changed2, temperature2, humidity2, pressure2, last_changed3, temperature3, humidity3, pressure3, last_changed4, temperature4, humidity4, pressure4, last_changed5, temperature5, humidity5, pressure5
+        global last_changed, temperature, humidity, pressure, last_changed2, temperature2, humidity2, pressure2, last_changed3, temperature3, humidity3, pressure3, last_changed4, temperature4, humidity4, pressure4, last_changed5, temperature5, humidity5, pressure5, last_changed6, temperature6, humidity6, pressure6, last_changed7, temperature7, humidity7, pressure7, last_changed8, temperature8, humidity8, pressure8, last_changed9, temperature9, humidity9, pressure9, last_changed10, temperature10, humidity10, pressure10
 
         # get JSON from topic
         if msg.topic == config["MQTT"]["topic"]:
@@ -257,6 +316,66 @@ def on_message(client, userdata, msg):
                     # check if pressure exists
                     if "pressure5" in jsonpayload:
                         pressure5 = float(jsonpayload["pressure5"])                        
+
+                    if "temperature6" in jsonpayload:
+                        last_changed6 = int(time())
+                        temperature6 = float(jsonpayload["temperature6"])
+                        
+                    # check if humidity exists
+                    if "humidity6" in jsonpayload:
+                        humidity6 = float(jsonpayload["humidity6"])
+
+                    # check if pressure exists
+                    if "pressure6" in jsonpayload:
+                        pressure6 = float(jsonpayload["pressure6"])                        
+
+                    if "temperature7" in jsonpayload:
+                        last_changed7 = int(time())
+                        temperature7 = float(jsonpayload["temperature7"])
+                        
+                    # check if humidity exists
+                    if "humidity7" in jsonpayload:
+                        humidity7 = float(jsonpayload["humidity7"])
+
+                    # check if pressure exists
+                    if "pressure7" in jsonpayload:
+                        pressure7 = float(jsonpayload["pressure7"])                        
+
+                    if "temperature8" in jsonpayload:
+                        last_changed8 = int(time())
+                        temperature8 = float(jsonpayload["temperature8"])
+                        
+                    # check if humidity exists
+                    if "humidity8" in jsonpayload:
+                        humidity8 = float(jsonpayload["humidity8"])
+
+                    # check if pressure exists
+                    if "pressure8" in jsonpayload:
+                        pressure8 = float(jsonpayload["pressure8"])                        
+
+                    if "temperature9" in jsonpayload:
+                        last_changed9 = int(time())
+                        temperature9 = float(jsonpayload["temperature9"])
+                        
+                    # check if humidity exists
+                    if "humidity9" in jsonpayload:
+                        humidity9 = float(jsonpayload["humidity9"])
+
+                    # check if pressure exists
+                    if "pressure9" in jsonpayload:
+                        pressure9 = float(jsonpayload["pressure9"])                        
+
+                    if "temperature10" in jsonpayload:
+                        last_changed10 = int(time())
+                        temperature10 = float(jsonpayload["temperature10"])
+                        
+                    # check if humidity exists
+                    if "humidity10" in jsonpayload:
+                        humidity10 = float(jsonpayload["humidity10"])
+
+                    # check if pressure exists
+                    if "pressure10" in jsonpayload:
+                        pressure10 = float(jsonpayload["pressure10"])                        
 
                 else:
                     logging.error(
@@ -720,7 +839,438 @@ class DbusMqttTemperatureService5:
     def _handlechangedvalue(self, path, value):
         logging.debug("someone else updated %s to %s" % (path, value))
         return True  # accept the change
-        
+
+
+class DbusMqttTemperatureService6:
+    def __init__(
+        self,
+        servicename,
+        deviceinstance,
+        paths,
+        productname="MQTT Temperature 6",
+        customname="MQTT Temperature 6",
+        connection="MQTT Temperature service 6",
+    ):
+        self._dbusservice = VeDbusService(servicename,dbusconnection())
+        self._paths = paths
+
+        logging.debug("%s /DeviceInstance = %d" % (servicename, deviceinstance))
+
+        # Create the management objects, as specified in the ccgx dbus-api document
+        self._dbusservice.add_path("/Mgmt/ProcessName", __file__)
+        self._dbusservice.add_path(
+            "/Mgmt/ProcessVersion",
+            "Unkown version, and running on Python " + platform.python_version(),
+        )
+        self._dbusservice.add_path("/Mgmt/Connection", connection)
+
+        # Create the mandatory objects
+        self._dbusservice.add_path("/DeviceInstance", deviceinstance)
+        self._dbusservice.add_path("/ProductId", 0xFFFF)
+        self._dbusservice.add_path("/ProductName", productname)
+        self._dbusservice.add_path("/CustomName", customname)
+        self._dbusservice.add_path("/FirmwareVersion", "0.0.2 (20250503)")
+        # self._dbusservice.add_path('/HardwareVersion', '')
+        self._dbusservice.add_path("/Connected", 1)
+
+        self._dbusservice.add_path("/Status", 0)
+        self._dbusservice.add_path("/TemperatureType", type6)
+
+        for path, settings in self._paths.items():
+            self._dbusservice.add_path(
+                path,
+                settings["initial"],
+                gettextcallback=settings["textformat"],
+                writeable=True,
+                onchangecallback=self._handlechangedvalue,
+            )
+
+        GLib.timeout_add(1000, self._update)  # pause 1000ms before the next request
+
+    def _update(self):
+        global last_changed6, last_updated6
+
+        now = int(time())
+
+        if last_changed6 != last_updated6:
+            self._dbusservice["/Temperature"] = (
+                round(temperature6, 2) if temperature6 is not None else None
+            )
+            self._dbusservice["/Humidity"] = (
+                round(humidity6, 2) if humidity6 is not None else None
+            )
+            self._dbusservice["/Pressure"] = (
+                round(pressure6, 0) if pressure6 is not None else None
+            )
+
+            log_message = "Temperature: {:.1f} °C".format(temperature6)
+            log_message += (
+                " - Humidity: {:.1f} %".format(humidity6) if humidity6 is not None else ""
+            )
+            log_message += (
+                " - Pressure: {:.1f} hPa".format(pressure6)
+                if pressure6 is not None
+                else ""
+            )
+            logging.debug(log_message)
+
+            last_updated6 = last_changed6
+
+        # increment UpdateIndex - to show that new data is available
+        index = self._dbusservice["/UpdateIndex"] + 1  # increment index
+        if index > 255:  # maximum value of the index
+            index = 0  # overflow from 255 to 0
+        self._dbusservice["/UpdateIndex"] = index
+        return True
+
+    def _handlechangedvalue(self, path, value):
+        logging.debug("someone else updated %s to %s" % (path, value))
+        return True  # accept the change        
+
+class DbusMqttTemperatureService7:
+    def __init__(
+        self,
+        servicename,
+        deviceinstance,
+        paths,
+        productname="MQTT Temperature 7",
+        customname="MQTT Temperature 7",
+        connection="MQTT Temperature service 7",
+    ):
+        self._dbusservice = VeDbusService(servicename,dbusconnection())
+        self._paths = paths
+
+        logging.debug("%s /DeviceInstance = %d" % (servicename, deviceinstance))
+
+        # Create the management objects, as specified in the ccgx dbus-api document
+        self._dbusservice.add_path("/Mgmt/ProcessName", __file__)
+        self._dbusservice.add_path(
+            "/Mgmt/ProcessVersion",
+            "Unkown version, and running on Python " + platform.python_version(),
+        )
+        self._dbusservice.add_path("/Mgmt/Connection", connection)
+
+        # Create the mandatory objects
+        self._dbusservice.add_path("/DeviceInstance", deviceinstance)
+        self._dbusservice.add_path("/ProductId", 0xFFFF)
+        self._dbusservice.add_path("/ProductName", productname)
+        self._dbusservice.add_path("/CustomName", customname)
+        self._dbusservice.add_path("/FirmwareVersion", "0.0.2 (20250503)")
+        # self._dbusservice.add_path('/HardwareVersion', '')
+        self._dbusservice.add_path("/Connected", 1)
+
+        self._dbusservice.add_path("/Status", 0)
+        self._dbusservice.add_path("/TemperatureType", type7)
+
+        for path, settings in self._paths.items():
+            self._dbusservice.add_path(
+                path,
+                settings["initial"],
+                gettextcallback=settings["textformat"],
+                writeable=True,
+                onchangecallback=self._handlechangedvalue,
+            )
+
+        GLib.timeout_add(1000, self._update)  # pause 1000ms before the next request
+
+    def _update(self):
+        global last_changed7, last_updated7
+
+        now = int(time())
+
+        if last_changed7 != last_updated7:
+            self._dbusservice["/Temperature"] = (
+                round(temperature7, 2) if temperature7 is not None else None
+            )
+            self._dbusservice["/Humidity"] = (
+                round(humidity7, 2) if humidity7 is not None else None
+            )
+            self._dbusservice["/Pressure"] = (
+                round(pressure7, 0) if pressure7 is not None else None
+            )
+
+            log_message = "Temperature: {:.1f} °C".format(temperature7)
+            log_message += (
+                " - Humidity: {:.1f} %".format(humidity7) if humidity7 is not None else ""
+            )
+            log_message += (
+                " - Pressure: {:.1f} hPa".format(pressure7)
+                if pressure7 is not None
+                else ""
+            )
+            logging.debug(log_message)
+
+            last_updated7 = last_changed7
+
+        # increment UpdateIndex - to show that new data is available
+        index = self._dbusservice["/UpdateIndex"] + 1  # increment index
+        if index > 255:  # maximum value of the index
+            index = 0  # overflow from 255 to 0
+        self._dbusservice["/UpdateIndex"] = index
+        return True
+
+    def _handlechangedvalue(self, path, value):
+        logging.debug("someone else updated %s to %s" % (path, value))
+        return True  # accept the change        
+
+class DbusMqttTemperatureService8:
+    def __init__(
+        self,
+        servicename,
+        deviceinstance,
+        paths,
+        productname="MQTT Temperature 8",
+        customname="MQTT Temperature 8",
+        connection="MQTT Temperature service 8",
+    ):
+        self._dbusservice = VeDbusService(servicename,dbusconnection())
+        self._paths = paths
+
+        logging.debug("%s /DeviceInstance = %d" % (servicename, deviceinstance))
+
+        # Create the management objects, as specified in the ccgx dbus-api document
+        self._dbusservice.add_path("/Mgmt/ProcessName", __file__)
+        self._dbusservice.add_path(
+            "/Mgmt/ProcessVersion",
+            "Unkown version, and running on Python " + platform.python_version(),
+        )
+        self._dbusservice.add_path("/Mgmt/Connection", connection)
+
+        # Create the mandatory objects
+        self._dbusservice.add_path("/DeviceInstance", deviceinstance)
+        self._dbusservice.add_path("/ProductId", 0xFFFF)
+        self._dbusservice.add_path("/ProductName", productname)
+        self._dbusservice.add_path("/CustomName", customname)
+        self._dbusservice.add_path("/FirmwareVersion", "0.0.2 (20250503)")
+        # self._dbusservice.add_path('/HardwareVersion', '')
+        self._dbusservice.add_path("/Connected", 1)
+
+        self._dbusservice.add_path("/Status", 0)
+        self._dbusservice.add_path("/TemperatureType", type8)
+
+        for path, settings in self._paths.items():
+            self._dbusservice.add_path(
+                path,
+                settings["initial"],
+                gettextcallback=settings["textformat"],
+                writeable=True,
+                onchangecallback=self._handlechangedvalue,
+            )
+
+        GLib.timeout_add(1000, self._update)  # pause 1000ms before the next request
+
+    def _update(self):
+        global last_changed8, last_updated8
+
+        now = int(time())
+
+        if last_changed8 != last_updated8:
+            self._dbusservice["/Temperature"] = (
+                round(temperature8, 2) if temperature8 is not None else None
+            )
+            self._dbusservice["/Humidity"] = (
+                round(humidity8, 2) if humidity8 is not None else None
+            )
+            self._dbusservice["/Pressure"] = (
+                round(pressure8, 0) if pressure8 is not None else None
+            )
+
+            log_message = "Temperature: {:.1f} °C".format(temperature8)
+            log_message += (
+                " - Humidity: {:.1f} %".format(humidity8) if humidity8 is not None else ""
+            )
+            log_message += (
+                " - Pressure: {:.1f} hPa".format(pressure8)
+                if pressure8 is not None
+                else ""
+            )
+            logging.debug(log_message)
+
+            last_updated8 = last_changed8
+
+        # increment UpdateIndex - to show that new data is available
+        index = self._dbusservice["/UpdateIndex"] + 1  # increment index
+        if index > 255:  # maximum value of the index
+            index = 0  # overflow from 255 to 0
+        self._dbusservice["/UpdateIndex"] = index
+        return True
+
+    def _handlechangedvalue(self, path, value):
+        logging.debug("someone else updated %s to %s" % (path, value))
+        return True  # accept the change        
+
+class DbusMqttTemperatureService9:
+    def __init__(
+        self,
+        servicename,
+        deviceinstance,
+        paths,
+        productname="MQTT Temperature 9",
+        customname="MQTT Temperature 9",
+        connection="MQTT Temperature service 9",
+    ):
+        self._dbusservice = VeDbusService(servicename,dbusconnection())
+        self._paths = paths
+
+        logging.debug("%s /DeviceInstance = %d" % (servicename, deviceinstance))
+
+        # Create the management objects, as specified in the ccgx dbus-api document
+        self._dbusservice.add_path("/Mgmt/ProcessName", __file__)
+        self._dbusservice.add_path(
+            "/Mgmt/ProcessVersion",
+            "Unkown version, and running on Python " + platform.python_version(),
+        )
+        self._dbusservice.add_path("/Mgmt/Connection", connection)
+
+        # Create the mandatory objects
+        self._dbusservice.add_path("/DeviceInstance", deviceinstance)
+        self._dbusservice.add_path("/ProductId", 0xFFFF)
+        self._dbusservice.add_path("/ProductName", productname)
+        self._dbusservice.add_path("/CustomName", customname)
+        self._dbusservice.add_path("/FirmwareVersion", "0.0.2 (20250503)")
+        # self._dbusservice.add_path('/HardwareVersion', '')
+        self._dbusservice.add_path("/Connected", 1)
+
+        self._dbusservice.add_path("/Status", 0)
+        self._dbusservice.add_path("/TemperatureType", type9)
+
+        for path, settings in self._paths.items():
+            self._dbusservice.add_path(
+                path,
+                settings["initial"],
+                gettextcallback=settings["textformat"],
+                writeable=True,
+                onchangecallback=self._handlechangedvalue,
+            )
+
+        GLib.timeout_add(1000, self._update)  # pause 1000ms before the next request
+
+    def _update(self):
+        global last_changed9, last_updated9
+
+        now = int(time())
+
+        if last_changed9 != last_updated9:
+            self._dbusservice["/Temperature"] = (
+                round(temperature9, 2) if temperature9 is not None else None
+            )
+            self._dbusservice["/Humidity"] = (
+                round(humidity9, 2) if humidity9 is not None else None
+            )
+            self._dbusservice["/Pressure"] = (
+                round(pressure9, 0) if pressure9 is not None else None
+            )
+
+            log_message = "Temperature: {:.1f} °C".format(temperature9)
+            log_message += (
+                " - Humidity: {:.1f} %".format(humidity9) if humidity9 is not None else ""
+            )
+            log_message += (
+                " - Pressure: {:.1f} hPa".format(pressure9)
+                if pressure9 is not None
+                else ""
+            )
+            logging.debug(log_message)
+
+            last_updated9 = last_changed9
+
+        # increment UpdateIndex - to show that new data is available
+        index = self._dbusservice["/UpdateIndex"] + 1  # increment index
+        if index > 255:  # maximum value of the index
+            index = 0  # overflow from 255 to 0
+        self._dbusservice["/UpdateIndex"] = index
+        return True
+
+    def _handlechangedvalue(self, path, value):
+        logging.debug("someone else updated %s to %s" % (path, value))
+        return True  # accept the change        
+
+class DbusMqttTemperatureService10:
+    def __init__(
+        self,
+        servicename,
+        deviceinstance,
+        paths,
+        productname="MQTT Temperature 10",
+        customname="MQTT Temperature 10",
+        connection="MQTT Temperature service 10",
+    ):
+        self._dbusservice = VeDbusService(servicename,dbusconnection())
+        self._paths = paths
+
+        logging.debug("%s /DeviceInstance = %d" % (servicename, deviceinstance))
+
+        # Create the management objects, as specified in the ccgx dbus-api document
+        self._dbusservice.add_path("/Mgmt/ProcessName", __file__)
+        self._dbusservice.add_path(
+            "/Mgmt/ProcessVersion",
+            "Unkown version, and running on Python " + platform.python_version(),
+        )
+        self._dbusservice.add_path("/Mgmt/Connection", connection)
+
+        # Create the mandatory objects
+        self._dbusservice.add_path("/DeviceInstance", deviceinstance)
+        self._dbusservice.add_path("/ProductId", 0xFFFF)
+        self._dbusservice.add_path("/ProductName", productname)
+        self._dbusservice.add_path("/CustomName", customname)
+        self._dbusservice.add_path("/FirmwareVersion", "0.0.2 (20250503)")
+        # self._dbusservice.add_path('/HardwareVersion', '')
+        self._dbusservice.add_path("/Connected", 1)
+
+        self._dbusservice.add_path("/Status", 0)
+        self._dbusservice.add_path("/TemperatureType", type10)
+
+        for path, settings in self._paths.items():
+            self._dbusservice.add_path(
+                path,
+                settings["initial"],
+                gettextcallback=settings["textformat"],
+                writeable=True,
+                onchangecallback=self._handlechangedvalue,
+            )
+
+        GLib.timeout_add(1000, self._update)  # pause 1000ms before the next request
+
+    def _update(self):
+        global last_changed10, last_updated10
+
+        now = int(time())
+
+        if last_changed10 != last_updated10:
+            self._dbusservice["/Temperature"] = (
+                round(temperature10, 2) if temperature10 is not None else None
+            )
+            self._dbusservice["/Humidity"] = (
+                round(humidity10, 2) if humidity10 is not None else None
+            )
+            self._dbusservice["/Pressure"] = (
+                round(pressure10, 0) if pressure10 is not None else None
+            )
+
+            log_message = "Temperature: {:.1f} °C".format(temperature10)
+            log_message += (
+                " - Humidity: {:.1f} %".format(humidity10) if humidity10 is not None else ""
+            )
+            log_message += (
+                " - Pressure: {:.1f} hPa".format(pressure10)
+                if pressure10 is not None
+                else ""
+            )
+            logging.debug(log_message)
+
+            last_updated10 = last_changed10
+
+        # increment UpdateIndex - to show that new data is available
+        index = self._dbusservice["/UpdateIndex"] + 1  # increment index
+        if index > 255:  # maximum value of the index
+            index = 0  # overflow from 255 to 0
+        self._dbusservice["/UpdateIndex"] = index
+        return True
+
+    def _handlechangedvalue(self, path, value):
+        logging.debug("someone else updated %s to %s" % (path, value))
+        return True  # accept the change        
+
 def main():
     _thread.daemon = True  # allow the program to quit
 
@@ -862,8 +1412,58 @@ def main():
             deviceinstance=int(config["MQTT"]["device_instance5"]),
             customname=config["MQTT"]["device_name5"],
             paths=paths_dbus,
-        )    
+        )
+        
+    if int(config["DEFAULT"]["instances"]) > 5 :
+        logging.info("Create Instance 6")
+        DbusMqttTemperatureService6(
+            servicename="com.victronenergy.temperature.mqtt_temperature_"
+            + str(config["MQTT"]["device_instance6"]),
+            deviceinstance=int(config["MQTT"]["device_instance6"]),
+            customname=config["MQTT"]["device_name6"],
+            paths=paths_dbus,
+        )
+        
+    if int(config["DEFAULT"]["instances"]) > 6 :
+        logging.info("Create Instance 7")
+        DbusMqttTemperatureService7(
+            servicename="com.victronenergy.temperature.mqtt_temperature_"
+            + str(config["MQTT"]["device_instance7"]),
+            deviceinstance=int(config["MQTT"]["device_instance7"]),
+            customname=config["MQTT"]["device_name7"],
+            paths=paths_dbus,
+        )
+        
+    if int(config["DEFAULT"]["instances"]) > 7 :
+        logging.info("Create Instance 8")
+        DbusMqttTemperatureService8(
+            servicename="com.victronenergy.temperature.mqtt_temperature_"
+            + str(config["MQTT"]["device_instance8"]),
+            deviceinstance=int(config["MQTT"]["device_instance8"]),
+            customname=config["MQTT"]["device_name8"],
+            paths=paths_dbus,
+        )
     
+    if int(config["DEFAULT"]["instances"]) > 8 :
+        logging.info("Create Instance 9")
+        DbusMqttTemperatureService9(
+            servicename="com.victronenergy.temperature.mqtt_temperature_"
+            + str(config["MQTT"]["device_instance9"]),
+            deviceinstance=int(config["MQTT"]["device_instance9"]),
+            customname=config["MQTT"]["device_name9"],
+            paths=paths_dbus,
+        )
+    
+    if int(config["DEFAULT"]["instances"]) > 9 :
+        logging.info("Create Instance 10")
+        DbusMqttTemperatureService10(
+            servicename="com.victronenergy.temperature.mqtt_temperature_"
+            + str(config["MQTT"]["device_instance10"]),
+            deviceinstance=int(config["MQTT"]["device_instance10"]),
+            customname=config["MQTT"]["device_name10"],
+            paths=paths_dbus,
+        )
+
     logging.info(
         "Connected to dbus and switching over to GLib.MainLoop() (= event based)"
     )
