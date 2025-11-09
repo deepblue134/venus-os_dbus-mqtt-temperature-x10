@@ -1,4 +1,4 @@
-# venus-os_dbus-mqtt-temperature-x5 - Emulates up to 5 separate temperature sensors in VenusOS from info in MQTT data
+# venus-os_dbus-mqtt-temperature-x10 - Emulates up to 10 separate temperature sensors in VenusOS from info in MQTT data
 
 **First off, a big thanks to [mr-manuel](https://github.com/mr-manuel) that created a bunch of templates that made this possible**
 
@@ -9,7 +9,7 @@ I'm not responsible for the usage of this script. Use on own risk!
 
 
 ### Purpose
-The script emulates up to 5 temperature sensors in Venus OS. It gets the MQTT data from a subscribed topic and publishes the information on the dbus as the service com.victronenergy.temperature.mqtt_temperature with the VRM instances from the Config file.
+The script emulates up to 10 temperature sensors in Venus OS. It gets the MQTT data from a subscribed topic and publishes the information on the dbus as the service com.victronenergy.temperature.mqtt_temperature with the VRM instances from the Config file.
 
 
 ### Config
@@ -20,7 +20,7 @@ Copy or rename the config.sample.ini to config.ini in the dbus-mqtt-temperature 
 <summary>Example: Set number of instances to create, then change custom name, VRM Instance and type for all Sensors</summary>
 
 ```ruby
-; Set number of Instances to create, 1 is minimum, 5 is maximum
+; Set number of Instances to create, 1 is minimum, 10 is maximum
 ; default: 1
 instances = 1
 
